@@ -25,12 +25,9 @@ defineProps({
               <div class="container px-5 py-8 mx-auto">
                 <FlashMessage />
                 <div class="flex pl-4 my-4 lg:w-2/3 w-full mx-auto">
-                  <Link
-                    as="button"
-                    :href="route('items.create')"
-                    class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
-                  >
-                    商品登録
+                  <Link as="button" :href="route('items.create')"
+                    class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+                  商品登録
                   </Link>
                 </div>
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
@@ -38,23 +35,16 @@ defineProps({
                     <thead>
                       <tr>
                         <th
-                          class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl"
-                        >
+                          class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">
                           ID
                         </th>
-                        <th
-                          class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"
-                        >
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
                           商品名
                         </th>
-                        <th
-                          class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"
-                        >
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
                           価格
                         </th>
-                        <th
-                          class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"
-                        >
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
                           ステータス
                         </th>
                       </tr>
@@ -62,11 +52,12 @@ defineProps({
                     <tbody>
                       <tr v-bind:key="item.id" v-for="item in items">
                         <td class="px-4 py-3 border-b-2 border-gray-200">
-                          <Link
-                            class="text-blue-400"
-                            :href="route('items.show', { item: item.id })"
-                          >
-                            {{ item.id }}
+                          <Link class="text-blue-400" :href="
+                            route('items.show', {
+                              item: item.id,
+                            })
+                          ">
+                          {{ item.id }}
                           </Link>
                         </td>
                         <td class="px-4 py-3 border-b-2 border-gray-200">

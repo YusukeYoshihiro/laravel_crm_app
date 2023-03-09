@@ -12,13 +12,11 @@ defineProps({
     </div>
     <ul>
         <li v-for="blog in blogs" :key="blog.id">
-            件名:<Link
-                class="text-blue-400"
-                :href="route('inertia.show', { id: blog.id })"
-            >
-                {{ blog.title }},
+            件名:
+            <Link class="text-blue-400" :href="route('inertia.show', { id: blog.id })">
+            {{ blog.title }},
             </Link>
-            , 本文 {{ blog.content }}
+            , 本文: {{ blog.content }}
         </li>
     </ul>
     <h1>That is test name route</h1>
