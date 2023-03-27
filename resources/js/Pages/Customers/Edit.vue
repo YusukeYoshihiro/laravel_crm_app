@@ -36,12 +36,12 @@ const storeCustomer = () => {
 </script>
 
 <template>
-    <Head title="顧客登録" />
+    <Head title="顧客編集" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                顧客登録
+                顧客編集
             </h2>
         </template>
 
@@ -138,7 +138,7 @@ const storeCustomer = () => {
                                             <div class="p-2 w-full">
                                                 <button
                                                     class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                                                    顧客登録
+                                                    顧客編集
                                                 </button>
                                             </div>
                                         </div>

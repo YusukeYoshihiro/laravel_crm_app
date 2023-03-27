@@ -9,6 +9,23 @@ class Customer extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name', 
+        'kana', 
+        'tel', 
+        'email', 
+        'postcode', 
+        'address', 
+        'birthday', 
+        'gender', 
+        'memo'
+    ];
+
     public function scopeSearchCustomers($query, $input = null)
     {
         // if (!empty($input)) {
@@ -27,8 +44,8 @@ class Customer extends Model
         // }
         if (!empty($input)) {
             $model = new Customer();
-            if ($model::where('name', 'like', '%' .$input . '%')
-                ->orWhere('kana', 'like','%' . $input . '%')
+            if ($model::where('name', 'like', '%' . $input . '%')
+                ->orWhere('kana', 'like', '%' . $input . '%')
                 ->orWhere('tel', 'like', '%' . $input . '%')
                 ->exists()
             ) {
