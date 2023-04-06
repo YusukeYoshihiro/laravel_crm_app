@@ -6,33 +6,35 @@ import { Inertia } from "@inertiajs/inertia";
 import ValidationErrors from "@/Components/ValidationErrors.vue";
 import { Core as YubinBangoCore } from "yubinbango-core2";
 
-defineProps({
+const props =  defineProps({
+    customer: Object,
     errors: Object,
 });
 
 const form = reactive({
-    name: null,
-    kana: null,
-    tel: null,
-    email: null,
-    postcode: null,
-    address: null,
-    birthday: null,
-    gender: null,
-    memo: null
+    id: props.customer.id,
+    name: props.customer.name,
+    kana: props.customer.kana,
+    tel: props.customer.tel,
+    email: props.customer.email,
+    postcode: props.customer.postcode,
+    address: props.customer.address,
+    birthday: props.customer.birthday,
+    gender: props.customer.gender,
+    memo: props.customer.memo,
 });
 
 // fetch address from postal code
 const fetchAddress = () => {
     new YubinBangoCore(String(form.postcode), (value) => {
-        // console.log(value);
         form.address = value.region + value.locality + value.street
     })
 }
 
-const storeCustomer = () => {
-    Inertia.post("/customers", form);
+const updateCustomer = (id) => {
+    Inertia.put(route("customers.update", { customer: id }), form);
 };
+
 </script>
 
 <template>
@@ -51,7 +53,7 @@ const storeCustomer = () => {
                     <div class="p-6 text-gray-900">
                         <ValidationErrors :errors="errors" />
                         <section class="text-gray-600 body-font relative">
-                            <form action="" @submit.prevent="storeCustomer">
+                            <form action="" @submit.prevent="updateCustomer(form.id)">
                                 <div class="container px-5 py-8 mx-auto">
                                     <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                         <div class="flex flex-wrap -m-2">
@@ -138,7 +140,7 @@ const storeCustomer = () => {
                                             <div class="p-2 w-full">
                                                 <button
                                                     class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                                                    顧客編集
+                                                    更新する
                                                 </button>
                                             </div>
                                         </div>
