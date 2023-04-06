@@ -1,56 +1,34 @@
 <script setup>
   import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
   import { Head } from "@inertiajs/vue3";
-  import { router } from "@inertiajs/vue3";
-  import { reactive } from "vue";
+  import { Link } from "@inertiajs/vue3";
   import { Inertia } from "@inertiajs/inertia";
-  import ValidationErrors from "@/Components/ValidationErrors.vue";
-  import { Core as YubinBangoCore } from "yubinbango-core2";
 
   defineProps({
-    errors: Object,
+    customer: Object,
   });
 
-  const form = reactive({
-    name: null,
-    kana: null,
-    tel: null,
-    email: null,
-    postcode: null,
-    address: null,
-    birthday: null,
-    gender: null,
-    memo: null,
-  });
-
-  // fetch address from postal code
-  const fetchAddress = () => {
-    new YubinBangoCore(String(form.postcode), (value) => {
-      // console.log(value);
-      form.address = value.region + value.locality + value.street;
+  const deleteCustomer = (id) => {
+    Inertia.delete(route("customers.destroy", { customer: id }), {
+      onBefore: () => confirm("本当に削除しますか？"),
     });
-  };
-
-  const storeCustomer = () => {
-    router.post("/customers", form);
   };
 </script>
 
 <template>
-  <Head title="顧客登録" />
+  <Head title="顧客詳細" />
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">顧客登録</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">顧客詳細</h2>
     </template>
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-6 text-gray-900">
-            <ValidationErrors :errors="errors" />
             <section class="text-gray-600 body-font relative">
-              <form action="" @submit.prevent="storeCustomer" :disabled="form.processing">
+              <form action="" @submit.prevent="storeCustomer">
                 <div class="container px-5 py-8 mx-auto">
                   <div class="lg:w-1/2 md:w-2/3 mx-auto">
                     <div class="flex flex-wrap -m-2">
@@ -59,13 +37,12 @@
                           <label for="name" class="leading-7 text-sm text-gray-600"
                             >顧客名(会員名)</label
                           >
-                          <input
-                            type="text"
+                          <div
                             id="name"
-                            name="name"
-                            v-model="form.name"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                          />
+                          >
+                            {{ customer.name }}
+                          </div>
                         </div>
                       </div>
 
@@ -74,13 +51,12 @@
                           <label for="kana" class="leading-7 text-sm text-gray-600"
                             >顧客名カナ</label
                           >
-                          <input
-                            type="text"
+                          <div
                             id="kana"
-                            name="kana"
-                            v-model="form.kana"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                          />
+                          >
+                            {{ customer.kana }}
+                          </div>
                         </div>
                       </div>
 
@@ -89,13 +65,12 @@
                           <label for="tel" class="leading-7 text-sm text-gray-600"
                             >電話番号</label
                           >
-                          <input
-                            type="tel"
+                          <div
                             id="tel"
-                            name="tel"
-                            v-model="form.tel"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                          />
+                          >
+                            {{ customer.tel }}
+                          </div>
                         </div>
                       </div>
 
@@ -104,13 +79,12 @@
                           <label for="email" class="leading-7 text-sm text-gray-600"
                             >メールアドレス</label
                           >
-                          <input
-                            type="email"
+                          <div
                             id="email"
-                            name="email"
-                            v-model="form.email"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                          />
+                          >
+                            {{ customer.email }}
+                          </div>
                         </div>
                       </div>
 
@@ -119,14 +93,12 @@
                           <label for="postcode" class="leading-7 text-sm text-gray-600"
                             >郵便番号</label
                           >
-                          <input
-                            type="number"
+                          <div
                             id="postcode"
-                            name="postcode"
-                            @change="fetchAddress"
-                            v-model="form.postcode"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                          />
+                          >
+                            {{ customer.postcode }}
+                          </div>
                         </div>
                       </div>
 
@@ -135,13 +107,12 @@
                           <label for="address" class="leading-7 text-sm text-gray-600"
                             >住所</label
                           >
-                          <input
-                            type="text"
+                          <div
                             id="address"
-                            name="address"
-                            v-model="form.address"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                          />
+                          >
+                            {{ customer.address }}
+                          </div>
                         </div>
                       </div>
 
@@ -150,43 +121,42 @@
                           <label for="birthday" class="leading-7 text-sm text-gray-600"
                             >誕生日</label
                           >
-                          <input
-                            type="date"
+                          <div
                             id="birthday"
-                            name="birthday"
-                            v-model="form.birthday"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                          />
+                          >
+                            {{ customer.birthday }}
+                          </div>
                         </div>
                       </div>
 
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label class="leading-7 text-sm text-gray-600">性別</label>
-                          <input
-                            type="radio"
-                            id="gender0"
-                            name="gender"
-                            v-model="form.gender"
-                            value="0"
-                          />
-                          <label for="gender0" class="ml-2 mr-4">男性</label>
-                          <input
-                            type="radio"
-                            id="gender1"
-                            name="gender"
-                            v-model="form.gender"
-                            value="1"
-                          />
-                          <label for="gender1" class="ml-2 mr-4">女性</label>
-                          <input
-                            type="radio"
-                            id="gender2"
-                            name="gender"
-                            v-model="form.gender"
-                            value="2"
-                          />
-                          <label for="gender2" class="ml-2 mr-4">その他</label>
+                          <span v-if="customer.gender === 0">
+                            <div
+                              id="gender0"
+                              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            >
+                              男性
+                            </div>
+                          </span>
+                          <span v-if="customer.gender === 1">
+                            <div
+                              id="gender1"
+                              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            >
+                              女性
+                            </div>
+                          </span>
+                          <span v-if="customer.gender === 2">
+                            <div
+                              id="gender2"
+                              class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            >
+                              その他
+                            </div>
+                          </span>
                         </div>
                       </div>
 
@@ -195,24 +165,33 @@
                           <label for="memo" class="leading-7 text-sm text-gray-600"
                             >メモ</label
                           >
-                          <textarea
+                          <div
                             id="memo"
-                            name="memo"
-                            v-model="form.memo"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                          ></textarea>
+                          >
+                            {{ customer.memo }}
+                          </div>
                         </div>
+                      </div>
+                      <div class="p-2 w-full">
+                        <Link
+                          as="button"
+                          :href="route('customers.edit', { customer: customer.id })"
+                          class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                        >
+                          編集する
+                        </Link>
+                      </div>
+                      <div class="mt-10 p-2 w-full">
+                        <button
+                          @click="deleteCustomer(customer.id)"
+                          class="flex mx-auto text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg"
+                        >
+                          削除する
+                        </button>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="p-2 w-full">
-                  <button
-                    type="submit"
-                    class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-                  >
-                    顧客登録
-                  </button>
                 </div>
               </form>
             </section>

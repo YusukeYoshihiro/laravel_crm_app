@@ -50,8 +50,10 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
+         // インプットの名前も半角・全角のスペースが含まれている場合、スペースを省く
+        $trimSpaceFromInputName = preg_replace("/( |　)/", " ", $request->name);
         Customer::create([
-            'name' => $request->name,
+            'name' => $trimSpaceFromInputName,
             'kana' => $request->kana,
             'tel' => $request->tel,
             'email' => $request->email,
@@ -65,7 +67,7 @@ class CustomerController extends Controller
         return to_route('customers.index')
             ->with([
                 'message' => '登録しました。',
-                'status' => 'success'
+                'status' => 'success'     
             ]);
     }
 
@@ -77,7 +79,10 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        //  dd($customer);
+         return Inertia::render("Customers/Show", [
+            'customer' => $customer,
+        ]);
     }
 
     /**
@@ -88,7 +93,9 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return Inertia::render('Customers/Edit', [
+            'customer' => $customer,
+        ]);
     }
 
     /**
@@ -100,7 +107,22 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        // dd($request->name, $customer->name);
+        $customer->name = $request->name;
+        $customer->kana = $request->kana;
+        $customer->tel = $request->tel;
+        $customer->email = $request->email;
+        $customer->postcode = $request->postcode;
+        $customer->address = $request->address;
+        $customer->birthday = $request->birthday;
+        $customer->gender = $request->gender;
+        $customer->memo = $request->memo;
+        $customer->save();
+
+        return to_route('customers.index')->with([
+            'message' => '更新しました。',
+            'status' => 'success'
+        ]);
     }
 
     /**
@@ -111,6 +133,11 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return to_route('customers.index')->with([
+            'message' => '削除しました。',
+            'status' => 'danger'
+        ]);
     }
 }
