@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('kana');
-            $table->string('tel')->unique();
+            $table->string('tel');
             $table->string('email');
             $table->string('postcode');
             $table->string('address');

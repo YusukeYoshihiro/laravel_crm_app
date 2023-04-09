@@ -29,7 +29,7 @@ class Customer extends Model
     public function scopeSearchCustomers($query, $input = null)
     {
         if (!empty($input)) {
-            // 検索フォームのインプットに半角or全角のスペースが含まれている場合
+            // 検索フォームのインプットに先頭末尾以外に半角or全角のスペースが含まれている場合
             if (preg_match('/( |　)/', $input)) {
 
                 //スペースを省く

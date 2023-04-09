@@ -112,7 +112,7 @@ class CustomerController extends Controller
         $customer->name = $request->name;
         $customer->kana = $request->kana;
         $customer->tel = $request->tel;
-        $customer->email = $request->email;
+        // $customer->email = $request->email;
         $customer->postcode = $request->postcode;
         $customer->address = $request->address;
         $customer->birthday = $request->birthday;
