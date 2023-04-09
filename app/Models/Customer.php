@@ -29,25 +29,30 @@ class Customer extends Model
     public function scopeSearchCustomers($query, $input = null)
     {
         if (!empty($input)) {
+            // 検索フォームのインプットに半角or全角のスペースが含まれている場合
             if (preg_match('/( |　)/', $input)) {
-                // インプットの名前もしくはフリガナに半角・全角のスペースが含まれている場合、スペースを省く
+
+                //スペースを省く
                 $trimSpaceFromInput = preg_replace("/( |　)/", "", $input);
 
-                if (Customer::where(function ($query) use ($trimSpaceFromInput) {
+                $customerModel = new Customer();
+
+                // search by name
+                if ($customerModel::where(function ($query) use ($trimSpaceFromInput) {
                     $whereName = "replace(name, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
                     $query->whereRaw($whereName);
                 })->exists()) {
-                    return Customer::where(function ($query) use ($trimSpaceFromInput) {
+                    return $customerModel::where(function ($query) use ($trimSpaceFromInput) {
                         $whereName = "replace(name, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
                         $query->whereRaw($whereName);
                     });
                 }
 
-                if (Customer::where(function ($query) use ($trimSpaceFromInput) {
+                if ($customerModel::where(function ($query) use ($trimSpaceFromInput) {
                     $whereKana = "replace(kana, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
                     $query->whereRaw($whereKana);
                 })->exists()) {
-                    return Customer::where(function ($query) use ($trimSpaceFromInput) {
+                    return $customerModel::where(function ($query) use ($trimSpaceFromInput) {
                         $whereKana = "replace(kana, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
                         $query->whereRaw($whereKana);
                     });
@@ -55,6 +60,16 @@ class Customer extends Model
             } else {
                 $customerModel = new Customer();
 
+                // search by id
+                if ($customerModel::where(function ($query) use ($input) {
+                    $query->where('id', '=', $input);
+                })->exists()) {
+                    return $customerModel::where(function ($query) use ($input) {
+                        $query->where('id', '=', $input);
+                    });
+                } 
+
+                // search by name
                 if ($customerModel::where(function ($query) use ($input) {
                     $whereName = "replace(name, ' ','') like " . "'%" . $input . "%'";
                     $query->whereRaw($whereName);
@@ -63,7 +78,10 @@ class Customer extends Model
                         $whereName = "replace(name, ' ','') like " . "'%" . $input . "%'";
                         $query->whereRaw($whereName);
                     });
-                } elseif ($customerModel::where(function ($query) use ($input) {
+                } 
+                
+                // search by kana
+                if ($customerModel::where(function ($query) use ($input) {
                     $whereKana = "replace(kana, ' ','') like " . "'%" . $input . "%'";
                     $query->whereRaw($whereKana);
                 })->exists()) {
@@ -71,10 +89,11 @@ class Customer extends Model
                         $whereKana = "replace(kana, ' ','') like " . "'%" . $input . "%'";
                         $query->whereRaw($whereKana);
                     });
-                } else {
-                    return $customerModel::where('name', 'like', '%' . $input . '%')
-                        ->orWhere('kana', 'like', '%' . $input . '%')
-                        ->orWhere('tel', 'like', '%' . $input . '%');
+                }
+
+                // search by tel
+                if ($customerModel::where('tel', 'like', "%" . $input . "%")->exists()){
+                    return $customerModel::where('tel', 'like', "%" . $input . "%");
                 }
             }
         }

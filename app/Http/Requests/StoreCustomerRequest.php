@@ -24,7 +24,7 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:50'],
+            'name' => ['required', 'regex:/^[ a-zA-Zぁ-んーァ-ヶー一-龠]+$/u' ,'max:50'],
             // 'kana' => ['required', 'regex:/^[ァ-ヾ]+$/u', 'max:50'],
             'kana' => ['required', 'regex:/^[ ア-ン゛゜ァ-ォャ-ョー]+$/u', 'max:50'],
             'tel' => ['required', 'max:20', 'unique:customers,tel'],
