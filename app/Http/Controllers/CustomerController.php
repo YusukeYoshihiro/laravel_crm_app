@@ -50,9 +50,6 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        // フォームに入力された氏名に半角・全角のスペースが含まれている場合、半角スペース一文字分に変換
-        // $trimSpaceFromInputName = preg_replace("/( |　)/", " ", $request->name);
-
         Customer::create([
             'name' => $request->name,
             'kana' => $request->kana,

@@ -28,7 +28,7 @@ class Customer extends Model
 
     public function scopeSearchCustomers($query, $input = null)
     {
-        if (!empty($input)) {
+        if (isset($input)) {
             // 検索フォームのインプットに先頭末尾以外に半角or全角のスペースが含まれている場合
             if (preg_match('/( |　)/', $input)) {
 
@@ -48,6 +48,7 @@ class Customer extends Model
                     });
                 }
 
+                // search by name
                 if ($customerModel::where(function ($query) use ($trimSpaceFromInput) {
                     $whereKana = "replace(kana, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
                     $query->whereRaw($whereKana);
@@ -62,12 +63,18 @@ class Customer extends Model
 
                 // search by id
                 if ($customerModel::where(function ($query) use ($input) {
-                    $query->where('id', '=', $input);
+                    $query->where('id', 'like', (string)$input);
                 })->exists()) {
                     return $customerModel::where(function ($query) use ($input) {
-                        $query->where('id', '=', $input);
+                        $query->where('id', 'like', (string)$input);
                     });
-                } 
+                }
+
+                // // search by tel
+                if ($customerModel::where('tel', 'like', "%" . $input . "%")->exists()) {
+                    $customerModel::where('tel', 'like', "%" . $input . "%");
+                    return $customerModel::where('tel', 'like', "%" . $input . "%");
+                }
 
                 // search by name
                 if ($customerModel::where(function ($query) use ($input) {
@@ -78,8 +85,8 @@ class Customer extends Model
                         $whereName = "replace(name, ' ','') like " . "'%" . $input . "%'";
                         $query->whereRaw($whereName);
                     });
-                } 
-                
+                }
+
                 // search by kana
                 if ($customerModel::where(function ($query) use ($input) {
                     $whereKana = "replace(kana, ' ','') like " . "'%" . $input . "%'";
@@ -89,11 +96,6 @@ class Customer extends Model
                         $whereKana = "replace(kana, ' ','') like " . "'%" . $input . "%'";
                         $query->whereRaw($whereKana);
                     });
-                }
-
-                // search by tel
-                if ($customerModel::where('tel', 'like', "%" . $input . "%")->exists()){
-                    return $customerModel::where('tel', 'like', "%" . $input . "%");
                 }
             }
         }
