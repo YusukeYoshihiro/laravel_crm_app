@@ -87,7 +87,7 @@
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label for="tel" class="leading-7 text-sm text-gray-600"
-                            >電話番号</label
+                            >電話番号(ハイフンなし)</label
                           >
                           <input
                             type="tel"
@@ -117,7 +117,7 @@
                       <div class="p-2 w-full">
                         <div class="relative">
                           <label for="postcode" class="leading-7 text-sm text-gray-600"
-                            >郵便番号</label
+                            >郵便番号(ハイフンなし)</label
                           >
                           <input
                             type="number"
