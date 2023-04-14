@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Domains\Customer\UseCases\Customer\FilterAction;
 
 class CustomerController extends Controller
 {
@@ -15,17 +16,15 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        // $getTest = Customer::select('id', 'name', 'kana', 'tel')->get();
-        // $paginateTest = Customer::select('id', 'name', 'kana', 'tel')->paginate(50);
+    public function index(
+        Request $request,
+        FilterAction $action,
+    ) {
+       
 
-        // dd($getTest, $paginateTest);
-
-        $customers = Customer::searchCustomers($request->search)
-            ->select('id', 'name', 'kana', 'tel')->paginate(50);
-
-        // dd($customers);
+        $customers = $action->invoke($request)
+            ->select('id', 'name', 'kana', 'tel', 'email')
+            ->paginate(20);
 
         return Inertia::render('Customers/Index', [
             'customers' => $customers,
@@ -65,7 +64,7 @@ class CustomerController extends Controller
         return to_route('customers.index')
             ->with([
                 'message' => '登録しました。',
-                'status' => 'success'     
+                'status' => 'success'
             ]);
     }
 
@@ -78,7 +77,7 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         //  dd($customer);
-         return Inertia::render("Customers/Show", [
+        return Inertia::render("Customers/Show", [
             'customer' => $customer,
         ]);
     }

@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
 import { reactive } from "vue";
 import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/vue3";
 import ValidationErrors from "@/Components/ValidationErrors.vue";
 import { Core as YubinBangoCore } from "yubinbango-core2";
 
@@ -32,7 +33,7 @@ const fetchAddress = () => {
 }
 
 const updateCustomer = (id) => {
-    Inertia.put(route("customers.update", { customer: id }), form);
+    router.put(route("customers.update", { customer: id }), form);
 };
 
 </script>
