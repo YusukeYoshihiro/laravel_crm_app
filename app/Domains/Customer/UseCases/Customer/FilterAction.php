@@ -5,11 +5,6 @@ namespace App\Domains\Customer\UseCases\Customer;
 use App\Models\Customer;
 use App\Http\Requests\Customer\FilterRequest;
 use Illuminate\Http\Request;
-
-// use App\Domains\Customer\Entities\CustomerCollection;
-// use App\Http\Requests\Seminar\FilterRequest;
-// use Illuminate\Pagination\LengthAwarePaginator;
-
 final class FilterAction
 {
     /**
