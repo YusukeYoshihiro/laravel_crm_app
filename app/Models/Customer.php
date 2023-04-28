@@ -50,7 +50,6 @@ class Customer extends Model
      */
     public function scopeSearchCustomersById($query, int $id = null)
     {
-        // search by id
         return $query
             ->where('id', '=', (int)$id);
     }
@@ -62,7 +61,6 @@ class Customer extends Model
      */
     public function scopeSearchCustomersByName($query, string $name)
     {
-        // search by name
         // 検索フォームのインプットに先頭末尾以外に半角or全角のスペースが含まれている場合
         if (preg_match('/( |　)/', $name)) {
 
@@ -85,7 +83,6 @@ class Customer extends Model
      */
     public function scopeSearchCustomersByKana($query, string $kana)
     {
-        // search by kana
         // 検索フォームのインプットに先頭末尾以外に半角or全角のスペースが含まれている場合
         if (preg_match('/( |　)/', $kana)) {
 
@@ -108,7 +105,6 @@ class Customer extends Model
      */
     public function scopeSearchCustomersByTel($query, string $tel)
     {
-        // search by tel
         if (Customer::exists()) {
             return $query->where('tel', 'like', "%" . $tel . "%");
         }
@@ -121,7 +117,6 @@ class Customer extends Model
      */
     public function scopeSearchCustomersByEmail($query, string $email)
     {
-        // search by Email
         if (Customer::exists()) {
             return $query->where('email', 'like', "%" . $email . "%");
         }
