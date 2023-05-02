@@ -65,7 +65,7 @@ class PurchaseController extends Controller
 
             return to_route('dashboard')
                 ->with([
-                    'message' => '登録しました。',
+                    'message' => '購入情報を登録しました。',
                     'status' => 'success'
                 ]);
         } catch (\Exception $e) {
