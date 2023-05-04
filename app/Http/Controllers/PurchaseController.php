@@ -9,6 +9,8 @@ use Inertia\Inertia;
 use App\Models\Customer;
 use App\Models\Item;
 use Illuminate\Support\Facades\DB;
+use App\Domains\Customer\UseCases\Customer\FilterCustomerActionInPurchase;
+use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
 {
@@ -27,14 +29,15 @@ class PurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(
+        Request $request,
+        FilterCustomerActionInPurchase $action
+    ) {
         // $customers = Customer::select('id', 'name', 'kana')->get();
         $items = Item::select('id', 'name', 'price')
             ->where('is_selling', true)->get();
 
         return Inertia::render('Purchases/Create', [
-            // 'customers' => $customers,
             'items' => $items
         ]);
     }

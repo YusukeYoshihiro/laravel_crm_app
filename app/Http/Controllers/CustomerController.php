@@ -20,7 +20,6 @@ class CustomerController extends Controller
         Request $request,
         FilterAction $action,
     ) {
-       
 
         $customers = $action->invoke($request)
             ->select('id', 'name', 'kana', 'tel', 'email')
