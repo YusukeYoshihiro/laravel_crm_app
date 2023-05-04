@@ -1,10 +1,21 @@
 <script setup>
   import axios from "axios";
-  import { ref, reactive } from "vue";
+  import { ref, onMounted, reactive } from "vue";
   import Pagination from "./Pagination.vue";
+  import { router } from "@inertiajs/vue3";
 
   const search = ref("");
   const customers = reactive({});
+
+  const props = defineProps({
+    customersData: Object,
+  });
+
+  // onMounted(() => {
+  //   axios.get("/api/user").then((res) => {
+  //     console.log(res.data);
+  //   }); 
+  // });
 
   const isShow = ref(false);
 
@@ -13,17 +24,28 @@
   };
 
   // DBにアクセスし取得するまでに若干時間がかかるため、async-awaitを使って、取得後に表示させる。
+  // const searchCustomers = async () => {
+  //   try {
+  //     await axios.get(`/api/searchCustomers/?search=${search.value}`).then((res) => {
+  //       console.log(res.data);
+  //       customers.value = res.data;
+  //     });
+  //     isShow.value = !isShow.value;
+  //   } catch (e) {
+  //     console.log(e.message);
+  //   }
+  // };
+
+  const form = reactive({
+    search: search.value,
+  });
+  console.log('search', form.search);
+
+  const customersData = ref(props.customersData)
+  console.log('customersData', customersData.value.data);
+
   const searchCustomers = async () => {
-    try {
-      await axios.get(`/api/searchCustomers/?search=${search.value}`).then((res) => {
-        console.log(res.data);
-        customers.value = res.data;
-        console.log(customers.value);
-      });
-      isShow.value = !isShow.value;
-    } catch (e) {
-      console.log(e.message);
-    }
+    router.get(route("purchases.create", form));
   };
 
   // 親コンポーネントに会員IDを渡す(会員検索経由)
@@ -57,7 +79,7 @@
           ></button>
         </header>
         <main class="modal__content" id="modal-1-content">
-          <div v-if="customers.value" class="lg:w-4/5 w-full mx-auto overflow-auto">
+          <div v-if="customersData.value" class="lg:w-4/5 w-full mx-auto overflow-auto">
             <!-- table section -->
             <table class="table-auto w-full text-left whitespace-no-wrap">
               <thead>
@@ -90,7 +112,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr :key="customer.id" v-for="customer in customers.value">
+                <tr :key="customer.id" v-for="customer in customersData.value">
                   <td class="px-4 py-3 border-b-2 border-gray-200">
                     <button
                       type="button"
@@ -115,10 +137,10 @@
                 </tr>
               </tbody>
             </table>
-            <!-- <Pagination
+            <Pagination
               class="mt-6 flex justify-center items-center"
-              :links="customers.value.links"
-            ></Pagination> -->
+              :links="customersData.links"
+            ></Pagination>
           </div>
         </main>
         <footer class="modal__footer">

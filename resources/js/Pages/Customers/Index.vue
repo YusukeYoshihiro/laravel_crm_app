@@ -9,9 +9,11 @@ import { ref } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import { router } from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
   customers: Object,
 });
+
+console.log(props.customers);
 
 const searchId = ref("");
 const searchName = ref("");
