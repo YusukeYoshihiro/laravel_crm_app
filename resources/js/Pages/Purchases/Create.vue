@@ -1,9 +1,11 @@
 <script setup>
+  import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
   import { getToday } from "@/common";
-  import { Inertia } from "@inertiajs/inertia";
+  import { Head } from "@inertiajs/vue3";
   import { onMounted, reactive, ref, computed } from "vue";
+  import { Inertia } from "@inertiajs/inertia";
   import ValidationErrors from "@/Components/ValidationErrors.vue";
-  import FlashMessage from "@/Components/FlashMessage.vue";
+  import MicroModal from "@/Components/MicroModal.vue";
 
   const props = defineProps({
     customers: Array,
@@ -68,11 +70,11 @@
 </script>
 
 <template>
-  <Head title="商品登録" />
+  <Head title="購入画面" />
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">商品登録</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">購入画面</h2>
     </template>
 
     <div class="py-12">
@@ -81,29 +83,48 @@
           <div class="p-6 text-gray-900">
             <ValidationErrors :errors="errors" />
             <section class="text-gray-600 body-font relative">
-              <form @submit.prevent="storePurchase">
+              <form action="" @submit.prevent="storePurchase">
                 <div class="container px-5 py-8 mx-auto">
                   <div class="lg:w-1/2 md:w-2/3 mx-auto">
                     <div class="flex flex-wrap -m-2">
-                      日付<br />
-                      <input type="date" name="date" v-model="form.date" /><br />
+                      <div class="p-2 w-full">
+                        <div class="relative">
+                          <label for="date" class="leading-7 text-sm text-gray-600"
+                            >日付</label
+                          >
+                          <input
+                            type="date"
+                            id="date"
+                            name="date"
+                            v-model="form.date"
+                            class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                          />
+                        </div>
+                      </div>
 
-                      会員名<br />
-                      <select
-                        name="customer"
-                        v-model="form.customer_id"
-                        id="{{ form.customer_id }}"
-                      >
-                        <option
-                          v-for="customer in customers"
-                          :value="customer.id"
-                          :key="customer.id"
-                        >
-                          {{ customer.id }} : {{ customer.name }}
-                        </option>
-                      </select>
+                      <div class="p-2 w-full">
+                        <div class="relative">
+                          <MicroModal />
+                          <label for="customer" class="leading-7 text-sm text-gray-600"
+                            >会員名</label
+                          >
+                          <select
+                            name="customer"
+                            v-model="form.customer_id"
+                            class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                          >
+                            <option
+                              v-for="customer in customers"
+                              :value="customer.id"
+                              :key="customer.id"
+                            >
+                              {{ customer.id }} : {{ customer.name }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
 
-                      <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                      <div class="w-full mt-8 mx-auto overflow-auto">
                         <table class="table-auto w-full text-left whitespace-no-wrap">
                           <thead>
                             <tr>
@@ -135,10 +156,16 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr v-for="item in itemList">
-                              <td class="px-4 py-3 border-b-2 border-gray-200">{{ item.id }}</td>
-                              <td class="px-4 py-3 border-b-2 border-gray-200">{{ item.name }}</td>
-                              <td class="px-4 py-3 border-b-2 border-gray-200">{{ item.price }}</td>
+                            <tr :key="item.id" v-for="item in itemList">
+                              <td class="px-4 py-3 border-b-2 border-gray-200">
+                                {{ item.id }}
+                              </td>
+                              <td class="px-4 py-3 border-b-2 border-gray-200">
+                                {{ item.name }}
+                              </td>
+                              <td class="px-4 py-3 border-b-2 border-gray-200">
+                                {{ item.price }}
+                              </td>
                               <td class="px-4 py-3 border-b-2 border-gray-200">
                                 <select name="quantity" v-model="item.quantity">
                                   <option v-for="q in quantity" :value="q">
@@ -153,18 +180,28 @@
                           </tbody>
                         </table>
                       </div>
-                      <br />
-                      合計: {{ totalPrice }} 円<br />
+
+                      <div class="p-2 w-full">
+                        <div class="relative">
+                          <label for="price" class="leading-7 text-sm text-gray-600"
+                            >合計金額
+                          </label>
+                          <div
+                            class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                          >
+                            {{ totalPrice }} 円
+                          </div>
+                        </div>
+                      </div>
+                      <div class="p-2 w-full">
+                        <button
+                          class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                        >
+                          登録する
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="p-2 w-full">
-                  <button
-                    type="submit"
-                    class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-                  >
-                    登録する
-                  </button>
                 </div>
               </form>
             </section>

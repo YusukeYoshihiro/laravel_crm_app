@@ -61,18 +61,15 @@ class Customer extends Model
      */
     public function scopeSearchCustomersByName($query, string $name)
     {
-        // 検索フォームのインプットに先頭末尾以外に半角or全角のスペースが含まれている場合
-        if (preg_match('/( |　)/', $name)) {
+        //検索inputに入力された値のスペースを省く
+        $trimSpaceFromInput = preg_replace("/( |　)/", "", $name);
 
-            //スペースを省く
-            $trimSpaceFromInput = preg_replace("/( |　)/", "", $name);
-
-            if (Customer::exists()) {
-                return $query->where(function ($query) use ($trimSpaceFromInput) {
-                    $whereName = "replace(name, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
-                    $query->whereRaw($whereName);
-                });
-            }
+        if (Customer::exists()) {
+            return $query->where(function ($query) use ($trimSpaceFromInput) {
+                //データベースにある氏名(name)のスペースを省き、スペースを省いた検索inputの値と比較
+                $whereName = "replace(name, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
+                $query->whereRaw($whereName);
+            });
         }
     }
 
@@ -83,18 +80,15 @@ class Customer extends Model
      */
     public function scopeSearchCustomersByKana($query, string $kana)
     {
-        // 検索フォームのインプットに先頭末尾以外に半角or全角のスペースが含まれている場合
-        if (preg_match('/( |　)/', $kana)) {
+        //検索inputに入力された値のスペースを省く
+        $trimSpaceFromInput = preg_replace("/( |　)/", "", $kana);
 
-            //スペースを省く
-            $trimSpaceFromInput = preg_replace("/( |　)/", "", $kana);
-
-            if (Customer::exists()) {
-                return $query->where(function ($query) use ($trimSpaceFromInput) {
-                    $whereName = "replace(kana, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
-                    $query->whereRaw($whereName);
-                });
-            }
+        if (Customer::exists()) {
+            return $query->where(function ($query) use ($trimSpaceFromInput) {
+                //データベースにあるカナ(kana)のスペースを省き、スペースを省いた検索inputの値と比較
+                $whereName = "replace(kana, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
+                $query->whereRaw($whereName);
+            });
         }
     }
 
@@ -119,6 +113,31 @@ class Customer extends Model
     {
         if (Customer::exists()) {
             return $query->where('email', 'like', "%" . $email . "%");
+        }
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param ?string $input
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearchCustomers($query, string $input = null)
+    {
+        if (!empty($input)) {
+
+            $trimSpaceFromInput = preg_replace("/( |　)/", "", $input);
+
+            if (Customer::exists()) {
+                return $query->where(function ($query) use ($trimSpaceFromInput) {
+                    $whereName = "replace(name, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
+                    $whereKana = "replace(kana, ' ','') like " . "'%" . $trimSpaceFromInput . "%'";
+
+                    $query->whereRaw($whereName)
+                        ->orWhereRaw($whereKana)
+                        ->orWhere('tel', 'like', "%" . $trimSpaceFromInput . "%")
+                        ->orWhere('email', 'like', "%" . $trimSpaceFromInput . "%");
+                });
+            }
         }
     }
 }
