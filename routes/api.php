@@ -23,9 +23,6 @@ Route::middleware('auth:sanctum')
             ->select('id', 'name', 'kana', 'tel', 'email')
             ->get();
             // ->paginate(1000);
-        // return Inertia::render('Purchases/Create', [
-        //     'customers' => $customers
-        // ]);
         return $customers;
     });
 

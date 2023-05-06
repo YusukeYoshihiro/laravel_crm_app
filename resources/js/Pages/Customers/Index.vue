@@ -5,7 +5,7 @@ import { Head } from "@inertiajs/vue3";
 import { Link } from "@inertiajs/vue3";
 import { reactive } from "vue";
 import Pagination from "@/Components/Pagination.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import { router } from "@inertiajs/vue3";
 
@@ -21,6 +21,7 @@ const searchKana = ref("");
 const searchTel = ref("");
 const searchEmail = ref("");
 
+// ref の値を取得するには、.valueが必要
 const form = reactive({
   searchId: searchId.value,
   searchName: searchName.value,
@@ -29,24 +30,12 @@ const form = reactive({
   searchEmail: searchEmail.value,
 });
 
-// ref の値を取得するには、.valueが必要
 const searchCustomers = () => {
   router.get(
     route("customers.index", form)
   );
 };
-// const searchCustomers = () => {
-//   router.get(
-//     route("customers.index", {
-//       searchId: searchId.value,
-//       searchName: searchName.value,
-//       searchKana: searchKana.value,
-//       searchTel: searchTel.value,
-//       searchEmail: searchEmail.value,
-//     }),
-//     form
-//   );
-// };
+
 </script>
 
 <template>

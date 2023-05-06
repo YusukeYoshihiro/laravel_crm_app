@@ -23,7 +23,8 @@ class CustomerController extends Controller
 
         $customers = $action->invoke($request)
             ->select('id', 'name', 'kana', 'tel', 'email')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return Inertia::render('Customers/Index', [
             'customers' => $customers,
