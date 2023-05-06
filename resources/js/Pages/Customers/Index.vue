@@ -14,11 +14,11 @@
     filters: Object,
   });
 
-  console.log('filters', props.filters);
+  console.log("filters", props.filters);
 
-  // const perPage = ref(5);
-  const perPage = typeof(props.filters.perPage) == 'undefined' ? ref(5) : props.filters.perPage;
-  
+  const perPage =
+    typeof props.filters.perPage == "undefined" ? ref(5) : props.filters.perPage;
+
   // コントローラから渡ってきた`filters`をpropsとして渡して検索フォームに値を保持させる。
   const searchId = ref(props.filters.searchId);
   const searchName = ref(props.filters.searchName);
@@ -56,6 +56,16 @@
       }
     );
   };
+
+  const clearSearchInput = () => {
+    form.searchId = null;
+    form.searchName = null;
+    form.searchKana = null;
+    form.searchTel = null;
+    form.searchEmail = null;
+
+    Inertia.get(route("customers.index"), form);
+  };
 </script>
 
 <template>
@@ -78,7 +88,7 @@
                   <Link
                     as="button"
                     :href="route('customers.create')"
-                    class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                    class="block lg:w-2/12 w-2/5 ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
                   >
                     顧客登録
                   </Link>
@@ -87,7 +97,7 @@
                   <h2 class="my-4 lg:w-4/5 w-full mx-auto">顧客検索</h2>
                   <div class="flex my-4 lg:w-4/5 w-full mx-auto">
                     <form class="w-full">
-                      <div class="grid grid-cols-3 gap-3">
+                      <div class="lg:grid lg:grid-cols-3 lg:gap-3">
                         <div>
                           <label class="">ID: </label><br />
                           <input
@@ -96,7 +106,7 @@
                             :value="searchId"
                             @input="searchId = $event.target.value"
                             placeholder="ID"
-                            class="mb-5 rounded"
+                            class="mb-5 rounded text-gray-900 placeholder-gray-400"
                           />
                         </div>
 
@@ -108,7 +118,7 @@
                             :value="searchName"
                             @input="searchName = $event.target.value"
                             placeholder="氏名"
-                            class="mb-5 rounded"
+                            class="mb-5 rounded text-gray-900 placeholder-gray-400"
                           />
                         </div>
                         <div>
@@ -119,7 +129,7 @@
                             :value="searchKana"
                             @input="searchKana = $event.target.value"
                             placeholder="カナ"
-                            class="rounded"
+                            class="mb-5 rounded text-gray-900 placeholder-gray-400"
                           />
                         </div>
 
@@ -131,7 +141,7 @@
                             :value="searchTel"
                             @input="searchTel = $event.target.value"
                             placeholder="電話番号"
-                            class="mb-5 rounded"
+                            class="mb-5 rounded text-gray-900 placeholder-gray-400"
                           />
                         </div>
 
@@ -143,17 +153,24 @@
                             :value="searchEmail"
                             @input="searchEmail = $event.target.value"
                             placeholder="メールアドレス"
-                            class="rounded"
+                            class="w-full mb-5 rounded text-gray-900 placeholder-gray-400"
                           />
                         </div>
                       </div>
 
                       <button
                         type="submit"
-                        class="flex ml-auto text-white bg-green-700 border-0 py-2 px-6 focus:outline-none hover:bg-green-800 rounded"
+                        class="block lg:w-2/12 w-2/5 mb-3 ml-auto text-white  bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:bg-teal-600 rounded"
                         @click="searchCustomers"
                       >
                         検索
+                      </button>
+                      <button
+                        type="button"
+                        class="block lg:w-2/12 w-2/5 ml-auto text-white bg-gray-400 border-0 py-2 px-6 focus:outline-none hover:bg-gray-600 rounded"
+                        @click="clearSearchInput"
+                      >
+                        クリア
                       </button>
                     </form>
                   </div>
@@ -164,7 +181,7 @@
                 <div class="lg:w-4/5 w-full mx-auto overflow-auto">
                   <!-- result section -->
                   <div v-if="!Object.keys(filters).length">
-                    <p>検索結果:  {{ customers.total }} 件</p>
+                    <p>検索結果: {{ customers.total }} 件</p>
                   </div>
                   <div v-if="Object.keys(filters).length">
                     <p>検索結果: {{ customers.total }} 件</p>
@@ -175,7 +192,7 @@
                       id=""
                       v-model="perPage"
                       @change="getTags"
-                      class="px-4 py-4 mb-4 w-1/6 rounded-md bg-gray-50 focus:bg-white focus:ring-0 text-sm"
+                      class="px-4 py-4 mb-4 lg:w-1/6 rounded-md bg-gray-50 focus:bg-white focus:ring-0 text-sm"
                     >
                       <option value="5">5 件表示</option>
                       <option value="10">10 件表示</option>
