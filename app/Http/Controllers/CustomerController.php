@@ -20,13 +20,27 @@ class CustomerController extends Controller
         Request $request,
         FilterAction $action,
     ) {
+        $perPage = $request['perPage'] ? $request['perPage'] : 5;
 
         $customers = $action->invoke($request)
             ->select('id', 'name', 'kana', 'tel', 'email')
-            ->paginate(20);
+            ->paginate($perPage)
+            ->withQueryString();
+
+        $filters = $request->only(
+            [
+                'searchId',
+                'searchName',
+                'searchKana',
+                'searchTel',
+                'searchEmail',
+                'perPage',
+            ]
+        );
 
         return Inertia::render('Customers/Index', [
             'customers' => $customers,
+            'filters' => $filters,
         ]);
     }
 
