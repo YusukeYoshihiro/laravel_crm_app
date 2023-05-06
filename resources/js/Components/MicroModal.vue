@@ -65,6 +65,10 @@
                   <th
                     class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl"
                   >
+                  </th>
+                  <th
+                    class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl"
+                  >
                     ID
                   </th>
                   <th
@@ -91,6 +95,15 @@
               </thead>
               <tbody>
                 <tr :key="customer.id" v-for="customer in customers.value">
+                  <td class="px-4 py-3 border-b-2 border-gray-200">
+                    <button
+                      type="button"
+                      @click="setCustomer({ id: customer.id, name: customer.name })"
+                      class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-7 focus:outline-none hover:bg-indigo-600 rounded text-sm"
+                    >
+                      追加
+                    </button>
+                  </td>
                   <td class="px-4 py-3 border-b-2 border-gray-200">
                     <button
                       type="button"

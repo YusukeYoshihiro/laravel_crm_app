@@ -26,8 +26,19 @@ class CustomerController extends Controller
             ->paginate(20)
             ->withQueryString();
 
+        $filters = $request->only(
+            [
+                'searchId',
+                'searchName',
+                'searchKana',
+                'searchTel',
+                'searchEmail',
+            ]
+        );
+
         return Inertia::render('Customers/Index', [
             'customers' => $customers,
+            'filters' => $filters,
         ]);
     }
 

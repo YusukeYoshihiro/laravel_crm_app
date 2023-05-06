@@ -11,15 +11,17 @@ import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
   customers: Object,
+  filters: Object,
 });
 
 console.log(props.customers);
 
-const searchId = ref("");
-const searchName = ref("");
-const searchKana = ref("");
-const searchTel = ref("");
-const searchEmail = ref("");
+// コントローラから渡ってきた`filters`をpropsとして渡して検索フォームに値を保持させる。
+const searchId = ref(props.filters.searchId);
+const searchName = ref(props.filters.searchName);
+const searchKana = ref(props.filters.searchKana);
+const searchTel = ref(props.filters.searchTel);
+const searchEmail = ref(props.filters.searchEmail);
 
 // ref の値を取得するには、.valueが必要
 const form = reactive({
