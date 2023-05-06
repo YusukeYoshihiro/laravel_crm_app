@@ -20,10 +20,11 @@ class CustomerController extends Controller
         Request $request,
         FilterAction $action,
     ) {
+        $perPage = $request['perPage'] ? $request['perPage'] : 5;
 
         $customers = $action->invoke($request)
             ->select('id', 'name', 'kana', 'tel', 'email')
-            ->paginate(20)
+            ->paginate($perPage)
             ->withQueryString();
 
         $filters = $request->only(
@@ -33,6 +34,7 @@ class CustomerController extends Controller
                 'searchKana',
                 'searchTel',
                 'searchEmail',
+                'perPage',
             ]
         );
 
