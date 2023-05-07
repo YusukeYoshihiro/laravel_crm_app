@@ -1,5 +1,30 @@
 # laravel_crm_app
 
+<img width='650' src="https://user-images.githubusercontent.com/58486430/236692928-24a41b8f-5cfd-4155-ad39-f35c561ae6a4.png">
+
+### 主要機能
+  - Authentication
+    - メール認証
+  - Admin
+    - 商品管理機能 (新規作成、編集、削除)
+    - 顧客（会員）管理機能(新規作成、編集、削除)
+    - 購入画面機能 (新規作成)
+  - 会員検索機能
+  - ページネーション
+  
+### 技術スタック
+  - Laravel (Backend)
+  - Vue3 (frontend)
+  - Inertia.js
+  - tailwindcss
+  - ライブラリ
+    - yubinbango-core2
+  - データベース & 開発環境
+    - MySQL
+    - Git/CLI
+    - Github
+    - Laravel debugger
+
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
