@@ -17,7 +17,7 @@ https://user-images.githubusercontent.com/58486430/236693544-08765860-9f77-462c-
   
 ### 技術スタック
   - Laravel (Backend)
-  - Vue3 (frontend)
+  - Vue3 (Frontend)
   - Inertia.js
   - tailwindcss
   - ライブラリ
