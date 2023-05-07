@@ -1,4 +1,4 @@
-# laravel_crm_app
+# Laravel CRM App
 
 <img width='650' src="https://user-images.githubusercontent.com/58486430/236692928-24a41b8f-5cfd-4155-ad39-f35c561ae6a4.png">
 
