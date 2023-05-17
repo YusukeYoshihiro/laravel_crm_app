@@ -5,7 +5,7 @@
   import { Link } from "@inertiajs/vue3";
   import { reactive } from "vue";
   import Pagination from "@/Components/Pagination.vue";
-  import { ref, watch } from "vue";
+  import { ref } from "vue";
   import { Inertia } from "@inertiajs/inertia";
   import { router } from "@inertiajs/vue3";
 
